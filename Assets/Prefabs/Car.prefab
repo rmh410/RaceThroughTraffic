@@ -41,7 +41,7 @@ GameObject:
   - component: {fileID: 23158049825923302}
   - component: {fileID: 65950492974940426}
   m_Layer: 0
-  m_Name: Bottom
+  m_Name: Body Bottom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -59,7 +59,7 @@ GameObject:
   - component: {fileID: 23100306945836732}
   - component: {fileID: 65721664984388568}
   m_Layer: 0
-  m_Name: Top
+  m_Name: Body Top
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -646,6 +646,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4432568640319514}
+  - component: {fileID: 114114166231173272}
   m_Layer: 0
   m_Name: Car
   m_TagString: Untagged
@@ -939,8 +940,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1960404658167606}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.06, z: 0}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: -46.1, y: 0.93, z: 2.26}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4673494613038186}
@@ -950,7 +951,7 @@ Transform:
   - {fileID: 4698423583287772}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!4 &4451841231631714
 Transform:
   m_ObjectHideFlags: 1
@@ -2470,6 +2471,17 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &114114166231173272
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1960404658167606}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5659e68732ad43bd92659433e1e0c68, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!136 &136012751858666374
 CapsuleCollider:
   m_ObjectHideFlags: 1
