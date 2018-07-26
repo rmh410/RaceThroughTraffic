@@ -1,11 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class MovePlayer : MonoBehaviour {
+public class MovePlayer : NetworkBehaviour {
 
-	public GameObject player;
-	public GameObject plane;
+	public GameObject viewer;
 	public float maxSpeed;
 	public float accelTime;
 
@@ -16,19 +16,31 @@ public class MovePlayer : MonoBehaviour {
 	
 
 	// Use this for initialization
-	void Start () {
+	public override void OnStartLocalPlayer () {
 		state = "still";
 		buttonTime = -5.0f;
-		player.GetComponent<Rigidbody>().isKinematic = false;
 		speed = 0.0f;
 		lastSpeed = 0.0f;
+
+		// set up camera and move to us
+		viewer = Camera.main.transform.parent.gameObject;
+		Debug.Log(Camera.main.transform.parent.gameObject);
+		Vector3 viewerDest = this.transform.position;
+		viewerDest.y = viewerDest.y+0.4f;
+		viewer.transform.position = viewerDest;
 	}
 	
 	// Update is called once per frame
 	void Update () {
+
+		if(!isLocalPlayer) {
+			return;
+		}
 		
-		Rigidbody rb = player.GetComponent<Rigidbody>();
 		Camera cam = Camera.main;
+
+		// set rotation
+		transform.eulerAngles = new Vector3(0, Camera.main.transform.eulerAngles.y, 0);
 
 		// when we click
 		if(Input.GetButtonDown("Fire1")) {
@@ -41,10 +53,10 @@ public class MovePlayer : MonoBehaviour {
 			// move forward at speed depending on time of button press
 			speed = maxSpeed * (Time.fixedTime - buttonTime)/accelTime;
 			// slice out y component
-			Vector3 dest = player.transform.position + speed * cam.transform.forward * Time.deltaTime;
-			dest.y = player.transform.position.y;
+			Vector3 dest = this.transform.position + speed * cam.transform.forward * Time.deltaTime;
+			dest.y = this.transform.position.y;
 			// update position
-			player.transform.position = dest;
+			this.transform.position = dest;
 			// if its been three seconds go to gliding state
 			if(Time.fixedTime - buttonTime >= accelTime) {
 				state = "gliding";
@@ -55,9 +67,9 @@ public class MovePlayer : MonoBehaviour {
 		else if (state == "gliding") {
 			// move forward
 			// slice out y component
-			Vector3 dest = player.transform.position + maxSpeed * cam.transform.forward * Time.deltaTime;
-			dest.y = player.transform.position.y;
-			player.transform.position = dest;
+			Vector3 dest = this.transform.position + maxSpeed * cam.transform.forward * Time.deltaTime;
+			dest.y = this.transform.position.y;
+			this.transform.position = dest;
 		}
 
 		// when we release button
@@ -72,15 +84,20 @@ public class MovePlayer : MonoBehaviour {
 			// move forward at speed depending on time of button release
 			speed = (accelTime - (Time.fixedTime - buttonTime))/accelTime * lastSpeed;
 			// slice out y component
-			Vector3 dest = player.transform.position + speed * cam.transform.forward * Time.deltaTime;
-			dest.y = player.transform.position.y;
-			player.transform.position = dest;
+			Vector3 dest = this.transform.position + speed * cam.transform.forward * Time.deltaTime;
+			dest.y = this.transform.position.y;
+			this.transform.position = dest;
 			// if its been three seconds stop
 			if(Time.fixedTime - buttonTime >= accelTime) {
 				state = "still";
 				speed = 0.0f;
 			}
 		}
+
+		// now move the camera
+		Vector3 viewerDest = this.transform.position;
+		viewerDest.y = viewerDest.y + 0.4f;
+		viewer.transform.position = viewerDest;
 
 	}
 }
