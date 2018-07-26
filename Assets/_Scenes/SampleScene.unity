@@ -1918,6 +1918,52 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 970dd4b9371394fb4890965f608d46fd, type: 2}
   m_IsPrefabParent: 0
+--- !u!1001 &1511329989
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4021867918557108, guid: 56a8f2391774949aea5567be48f3bf97, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 6.167554
+      objectReference: {fileID: 0}
+    - target: {fileID: 4021867918557108, guid: 56a8f2391774949aea5567be48f3bf97, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: -12.135448
+      objectReference: {fileID: 0}
+    - target: {fileID: 4021867918557108, guid: 56a8f2391774949aea5567be48f3bf97, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: -9.228067
+      objectReference: {fileID: 0}
+    - target: {fileID: 4021867918557108, guid: 56a8f2391774949aea5567be48f3bf97, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4021867918557108, guid: 56a8f2391774949aea5567be48f3bf97, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4021867918557108, guid: 56a8f2391774949aea5567be48f3bf97, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4021867918557108, guid: 56a8f2391774949aea5567be48f3bf97, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4021867918557108, guid: 56a8f2391774949aea5567be48f3bf97, type: 2}
+      propertyPath: m_RootOrder
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 1411137124978652, guid: 56a8f2391774949aea5567be48f3bf97, type: 2}
+      propertyPath: m_Name
+      value: Player1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 56a8f2391774949aea5567be48f3bf97, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &1523121592
 GameObject:
   m_ObjectHideFlags: 0
@@ -2163,7 +2209,7 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: 7e10065efb49b4714bac06fc7fb24120, type: 2}
+  - {fileID: 2100000, guid: 2e392fc8bdf5d446cb3b949f780ae4b2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
