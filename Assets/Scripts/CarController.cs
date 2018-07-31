@@ -10,7 +10,7 @@ public class CarController : MonoBehaviour
 
 	void Start()
 	{
-		// Assign random color to vehicle
+		 //Assign random color to vehicle
 		//Color randomColor = paint[(int)Random.Range(0.0f, lastPaintIndex - 1)];
 		//GameObject.Find("Body Top").GetComponent<Renderer>().material.color = randomColor;
 		//GameObject.Find("Body Bottom").GetComponent<Renderer>().material.color = randomColor;
@@ -19,5 +19,6 @@ public class CarController : MonoBehaviour
 	void Update()
 	{
 		transform.position += transform.forward * Time.deltaTime * speed;
+
 	}
 }

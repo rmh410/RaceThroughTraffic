@@ -20,14 +20,14 @@ public class TrafficController : MonoBehaviour
 
 	void Update()
 	{
-
 	}
 
 	private void CollectSpawnPoints()
 	{
 		for (int i = 0; i < numSpawnPoints; i++) {
-			Vector3 ithSpawnPos = GameObject.Find("Car Spawn " + (i + 1)).transform.position;
-			Quaternion ithSpawnRot = GameObject.Find("Car Spawn " + (i + 1)).transform.rotation;
+			Transform currentSpawnPoint = transform.GetChild(transform.childCount - 1).GetChild(i); // Get ith spawn point
+			Vector3 ithSpawnPos = currentSpawnPoint.position;
+			Quaternion ithSpawnRot = currentSpawnPoint.rotation;
 			carSpawnPositions[i] = ithSpawnPos;
 			carSpawnRotations[i] = ithSpawnRot;
 		}
