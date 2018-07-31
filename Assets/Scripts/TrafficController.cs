@@ -18,22 +18,8 @@ public class TrafficController : MonoBehaviour
 		SpawnVehicles();
 	}
 
-<<<<<<< HEAD
-	void Update()
-	{
-
-	}
-
 	private void CollectSpawnPoints()
 	{
-=======
-	void Update()
-	{
-	}
-
-	private void CollectSpawnPoints()
-	{
->>>>>>> df06f355a6c2505e5463272b3e69f250b34a5192
 		for (int i = 0; i < numSpawnPoints; i++) {
 			Transform currentSpawnPoint = transform.GetChild(transform.childCount - 1).GetChild(i); // Get ith spawn point
 			Vector3 ithSpawnPos = currentSpawnPoint.position;
