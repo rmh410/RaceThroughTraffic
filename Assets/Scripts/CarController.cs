@@ -12,7 +12,9 @@ public class CarController : MonoBehaviour
 	void Start()
 	{
 		// Assign random color to vehicle
-		Material randomColor = paint[(int)Random.Range(0.0f, paint.Length)];
+		float rand = Random.Range(0.0f, paint.Length);
+		Debug.Log("generating car, material index " + rand.ToString());
+		Material randomColor = paint[(int)rand];
 		transform.GetChild(2).GetChild(0).GetComponent<Renderer>().material = randomColor;
 		transform.GetChild(2).GetChild(1).GetComponent<Renderer>().material = randomColor;
 	}
@@ -30,7 +32,6 @@ public class CarController : MonoBehaviour
 	private void OnCollisionEnter(Collision collision)
 	{
 		string collisionName = collision.transform.name;
-		Debug.Log(collisionName);
 		if (Regex.IsMatch(collisionName, "Player*")) {
 			Debug.Log("Hit Player");
 			GetComponent<Rigidbody>().isKinematic = true;
