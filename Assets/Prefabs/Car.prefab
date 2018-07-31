@@ -646,9 +646,13 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4432568640319514}
+<<<<<<< HEAD
   - component: {fileID: 114046682585528166}
   - component: {fileID: 64410440554045920}
   - component: {fileID: 54011808107536796}
+=======
+  - component: {fileID: 114114166231173272}
+>>>>>>> df06f355a6c2505e5463272b3e69f250b34a5192
   m_Layer: 0
   m_Name: Car
   m_TagString: Untagged
@@ -959,7 +963,11 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1960404658167606}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+<<<<<<< HEAD
   m_LocalPosition: {x: -46.1, y: 0.93, z: 2.26}
+=======
+  m_LocalPosition: {x: -46.1, y: 1, z: 2.26}
+>>>>>>> df06f355a6c2505e5463272b3e69f250b34a5192
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4673494613038186}
@@ -2502,7 +2510,11 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+<<<<<<< HEAD
 --- !u!114 &114046682585528166
+=======
+--- !u!114 &114114166231173272
+>>>>>>> df06f355a6c2505e5463272b3e69f250b34a5192
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -2513,12 +2525,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5659e68732ad43bd92659433e1e0c68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+<<<<<<< HEAD
   speed: 5
   paint:
   - {fileID: 2100000, guid: d33bde61a1eb342fea54bded36205cce, type: 2}
   - {fileID: 2100000, guid: ca353a5536d494927bdf5240b0030010, type: 2}
   - {fileID: 2100000, guid: 4a5982a32c23843fc8e75f2cc29d46ec, type: 2}
   - {fileID: 2100000, guid: a4ee2a41f33774632b9e7e7511407e87, type: 2}
+=======
+>>>>>>> df06f355a6c2505e5463272b3e69f250b34a5192
 --- !u!136 &136012751858666374
 CapsuleCollider:
   m_ObjectHideFlags: 1
