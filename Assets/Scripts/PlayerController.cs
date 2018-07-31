@@ -3,20 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class MovePlayer : NetworkBehaviour {
+public class PlayerController : NetworkBehaviour {
 
 	public GameObject viewer;
 	public float maxSpeed;
 	public float accelTime;
+	public GameObject stateContainer;
+	public GameObject playerSpawns;
 
 	private float speed;
 	private string state;
 	private float buttonTime;
 	private float lastSpeed;
+	public GameState gameState;
 	
 
 	// Use this for initialization
 	public override void OnStartLocalPlayer () {
+		// player setup
 		state = "still";
 		buttonTime = -5.0f;
 		speed = 0.0f;
@@ -27,11 +31,23 @@ public class MovePlayer : NetworkBehaviour {
 		Vector3 viewerDest = this.transform.position;
 		viewerDest.y = viewerDest.y+0.4f;
 		viewer.transform.position = viewerDest;
+
+		// set player spawns
+		playerSpawns = GameObject.Find("Player Spawns");
 	}
 	
 	// Update is called once per frame
 	void Update () {
 
+		// get the game state
+		if(stateContainer == null) {
+			stateContainer = GameObject.Find("GameState Container");
+		}
+		else if (gameState == null) {
+			gameState = stateContainer.GetComponent<GameState>();
+		}
+
+		// server stops here, client continues below with movement
 		if(!isLocalPlayer) {
 			return;
 		}
@@ -100,8 +116,25 @@ public class MovePlayer : NetworkBehaviour {
 
 	}
 
+	// server should be checking position and updating accordingly if there is one
+	void CheckForWin() {
+		if(!isServer) {
+			return;
+		}
+		// is the player 
+	}
+
 	void OnCollisionEnter(Collision collision) {
-		Debug.Log("in collision");
-		transform.position = new Vector3(0,0,0);
+		// client should move to the next spawn point
+		if(isLocalPlayer) {
+			transform.position = playerSpawns.transform.GetChild(gameState.nextSpawn).position;
+
+		}
+
+		// server should update the next spawn point for round robin
+		if(isServer) {
+			gameState.UpdateSpawn();
+			return;
+		}
 	}
 }

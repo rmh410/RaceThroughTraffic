@@ -13,7 +13,7 @@ public class RaceNetworkDiscovery : NetworkDiscovery {
 	void Start () {
 		Initialize();
 		paramComponent = this.GetComponent<GameParameters>();
-		canvas = GameObject.Find("MatchmakingCanvas").transform;
+		canvas = GameObject.Find("Matchmaking Canvas").transform;
 	}
 	
 	public override void OnReceivedBroadcast(string fromAddress, string data) {

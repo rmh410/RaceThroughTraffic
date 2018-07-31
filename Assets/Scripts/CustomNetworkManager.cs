@@ -17,7 +17,7 @@ public class CustomNetworkManager : NetworkManager {
 		/* we need to make sure the gamestatemanager exists, so we'll just assign its value
 		when the first client (host client) joins the server */
 		if(conn.connectionId == 0) {
-			gameState = GameObject.Find("GameStateManager").GetComponent<GameState>();
+			gameState = GameObject.Find("GameState Container").GetComponent<GameState>();
 		}
     }
 
@@ -27,7 +27,7 @@ public class CustomNetworkManager : NetworkManager {
 		NetworkServer.DestroyPlayersForConnection(conn);
 
 		if (conn.lastError != NetworkError.Ok) {
-			if (LogFilter.logError) { Debug.LogError("ServerDisconnected due to error: " + conn.lastError); }
+			if (LogFilter.logError) { Debug.LogError("Server disconnected due to error: " + conn.lastError); }
 		}
 		/***********************************************/
 

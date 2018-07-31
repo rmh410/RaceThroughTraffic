@@ -7,6 +7,7 @@ public class GameState : MonoBehaviour {
 
 	public string curState;
 	public int maxNumPlayers;
+	public int nextSpawn = 0;
 
 // custom network manager
 	private CustomNetworkManager netMan;
@@ -32,4 +33,10 @@ public class GameState : MonoBehaviour {
 			curState = "active";
 		}
 	}
+
+	public void UpdateSpawn() {
+		nextSpawn = (nextSpawn + 1)%maxNumPlayers;
+	}
+
+	
 }

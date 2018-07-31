@@ -74,10 +74,10 @@ GameObject:
   - component: {fileID: 23683915426769690}
   - component: {fileID: 136621995229785582}
   - component: {fileID: 114254880466990394}
-  - component: {fileID: 114933153584961318}
   - component: {fileID: 64912842468216576}
   - component: {fileID: 54469289453170952}
   - component: {fileID: 114855778358152532}
+  - component: {fileID: 114140417821172090}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -319,6 +319,22 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &114140417821172090
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1721925165013428}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2e5f1052d1334fc0ae7bc80c3ca5e2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  viewer: {fileID: 0}
+  maxSpeed: 20
+  accelTime: 0.1
+  stateContainer: {fileID: 0}
+  playerSpawns: {fileID: 0}
 --- !u!114 &114254880466990394
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -372,20 +388,6 @@ MonoBehaviour:
   m_SnapThreshold: 5
   m_InterpolateRotation: 1
   m_InterpolateMovement: 1
---- !u!114 &114933153584961318
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1721925165013428}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e2e5f1052d1334fc0ae7bc80c3ca5e2f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  viewer: {fileID: 0}
-  maxSpeed: 30
-  accelTime: 0.1
 --- !u!136 &136621995229785582
 CapsuleCollider:
   m_ObjectHideFlags: 1
