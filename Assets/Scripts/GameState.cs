@@ -3,12 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class GameState : MonoBehaviour {
+public class GameState : NetworkBehaviour {
 
+	[SyncVar]
 	public string curState;
-	public int maxNumPlayers;
+
+	[SyncVar]
 	public int nextSpawn = 0;
+
+	[SyncVar]
 	public int winner;
+
+	public int maxNumPlayers;
 
 // custom network manager
 	private CustomNetworkManager netMan;
