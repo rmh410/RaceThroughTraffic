@@ -5,19 +5,24 @@ using UnityEngine;
 public class CarController : MonoBehaviour
 {
 	//private static Color[] paint = { Color.blue, Color.cyan, Color.green, Color.red, Color.yellow, Color.magenta };
-	//private static int lastPaintIndex = paint.Length - 1;
-	private float speed = 5.0f;
+	public float speed = 5.0f;
+	public Material[] paint;
 
 	void Start()
 	{
 		// Assign random color to vehicle
-		//Color randomColor = paint[(int)Random.Range(0.0f, lastPaintIndex - 1)];
-		//GameObject.Find("Body Top").GetComponent<Renderer>().material.color = randomColor;
-		//GameObject.Find("Body Bottom").GetComponent<Renderer>().material.color = randomColor;
+		Material randomColor = paint[(int)Random.Range(0.0f, paint.Length)];
+		transform.GetChild(2).GetChild(0).GetComponent<Renderer>().material = randomColor;
+		transform.GetChild(2).GetChild(1).GetComponent<Renderer>().material = randomColor;
 	}
 
 	void Update()
 	{
+		// move car forward
 		transform.position += transform.forward * Time.deltaTime * speed;
+		// destroy car if its off the map
+		if (transform.position.x < -55.0f || transform.position.x > 55.0f) {
+			Destroy(gameObject);
+		}
 	}
 }

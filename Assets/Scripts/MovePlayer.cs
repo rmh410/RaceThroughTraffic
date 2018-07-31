@@ -24,7 +24,6 @@ public class MovePlayer : NetworkBehaviour {
 
 		// set up camera and move to us
 		viewer = Camera.main.transform.parent.gameObject;
-		Debug.Log(Camera.main.transform.parent.gameObject);
 		Vector3 viewerDest = this.transform.position;
 		viewerDest.y = viewerDest.y+0.4f;
 		viewer.transform.position = viewerDest;
@@ -93,11 +92,16 @@ public class MovePlayer : NetworkBehaviour {
 				speed = 0.0f;
 			}
 		}
-
 		// now move the camera
 		Vector3 viewerDest = this.transform.position;
 		viewerDest.y = viewerDest.y + 0.4f;
 		viewer.transform.position = viewerDest;
 
+
+	}
+
+	void OnCollisionEnter(Collision collision) {
+		Debug.Log("in collision");
+		transform.position = new Vector3(0,0,0);
 	}
 }
