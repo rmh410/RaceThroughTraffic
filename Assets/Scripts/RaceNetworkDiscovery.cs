@@ -31,6 +31,11 @@ public class RaceNetworkDiscovery : NetworkDiscovery {
 
 			// remove button
 			canvas.GetChild(1).gameObject.SetActive(false);
+
+			// seed rng
+			Random.seed = paramComponent.seed;
+
+			// stop listening and trying to join
 			inGame = true;
 		}
 	}
@@ -59,6 +64,9 @@ public class RaceNetworkDiscovery : NetworkDiscovery {
 		paramComponent.seed = seed;
 		broadcastData = paramComponent.port + ":" + seed.ToString();
 		StartAsServer();
+
+		// seed rng
+		Random.seed = paramComponent.seed;
 	}
 
 	public void ResetClient() {

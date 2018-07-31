@@ -10,12 +10,14 @@ public class PlayerController : NetworkBehaviour {
 	public float accelTime;
 	public GameObject stateContainer;
 	public GameObject playerSpawns;
+	public GameObject scoreCanvas;
+	public GameState gameState;
+	public float winThreshold;
 
 	private float speed;
 	private string state;
 	private float buttonTime;
 	private float lastSpeed;
-	public GameState gameState;
 	
 
 	// Use this for initialization
@@ -47,11 +49,41 @@ public class PlayerController : NetworkBehaviour {
 			gameState = stateContainer.GetComponent<GameState>();
 		}
 
-		// server stops here, client continues below with movement
-		if(!isLocalPlayer) {
-			return;
+		if(isLocalPlayer) {
+			MovePlayer();
+			ScoreUpdate();
+		}
+
+		if (gameState != null && gameState.curState == "active") {
+			if(isServer) {
+			CheckForWin();
+			}
 		}
 		
+	}
+
+	// server should be checking position and updating accordingly if there is one
+	void CheckForWin() {
+		// is the player past the win point?
+		if(transform.position.z > winThreshold) {
+			gameState.curState = "ended";
+			gameState.winner = connectionToClient.connectionId;
+			Debug.Log(gameState.winner);
+		}
+	}
+
+	void ScoreUpdate() {
+		if(gameState.curState == "ended") {
+			if(gameState.winner == connectionToServer.connectionId) {
+				scoreCanvas.transform.GetChild(0).gameObject.SetActive(true);
+			}
+			else {
+				scoreCanvas.transform.GetChild(1).gameObject.SetActive(true);
+			}
+		}
+	}
+
+	void MovePlayer() {
 		Camera cam = Camera.main;
 
 		// set rotation
@@ -112,16 +144,6 @@ public class PlayerController : NetworkBehaviour {
 		Vector3 viewerDest = this.transform.position;
 		viewerDest.y = viewerDest.y + 0.4f;
 		viewer.transform.position = viewerDest;
-
-
-	}
-
-	// server should be checking position and updating accordingly if there is one
-	void CheckForWin() {
-		if(!isServer) {
-			return;
-		}
-		// is the player 
 	}
 
 	void OnCollisionEnter(Collision collision) {

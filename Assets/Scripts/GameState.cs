@@ -8,6 +8,7 @@ public class GameState : MonoBehaviour {
 	public string curState;
 	public int maxNumPlayers;
 	public int nextSpawn = 0;
+	public int winner;
 
 // custom network manager
 	private CustomNetworkManager netMan;
