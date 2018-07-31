@@ -13,7 +13,7 @@ public class CarController : MonoBehaviour
 	{
 		// Assign random color to vehicle
 		float rand = Random.Range(0.0f, paint.Length);
-		Debug.Log("generating car, material index " + rand.ToString());
+		Debug.Log("generating car, material index " + rand.ToString() + " (seed is " + Random.seed + ")");
 		Material randomColor = paint[(int)rand];
 		transform.GetChild(2).GetChild(0).GetComponent<Renderer>().material = randomColor;
 		transform.GetChild(2).GetChild(1).GetComponent<Renderer>().material = randomColor;
