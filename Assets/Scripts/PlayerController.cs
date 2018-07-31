@@ -73,6 +73,9 @@ public class PlayerController : NetworkBehaviour {
 	}
 
 	void ScoreUpdate() {
+		if(gameState == null) {
+			return;
+		}
 		if(gameState.curState == "ended") {
 			if(gameState.winner == connectionToServer.connectionId) {
 				scoreCanvas.transform.GetChild(0).gameObject.SetActive(true);

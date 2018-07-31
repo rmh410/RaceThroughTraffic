@@ -1310,7 +1310,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   carPrefab: {fileID: 1960404658167606, guid: d83d2c6760ad245c4975f6bb3f9fc160, type: 2}
-  speed: 30
+  speed: 10
   minSpacing: 4
   maxSpacing: 20
   stateContainer: {fileID: 855034128}
@@ -2036,6 +2036,7 @@ MonoBehaviour:
   curState: 
   maxNumPlayers: 1
   nextSpawn: 0
+  winner: 0
 --- !u!4 &855034131
 Transform:
   m_ObjectHideFlags: 0
@@ -2625,7 +2626,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   carPrefab: {fileID: 1960404658167606, guid: d83d2c6760ad245c4975f6bb3f9fc160, type: 2}
-  speed: 40
+  speed: 10
   minSpacing: 6
   maxSpacing: 10
   stateContainer: {fileID: 855034128}
@@ -2835,7 +2836,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   carPrefab: {fileID: 1960404658167606, guid: d83d2c6760ad245c4975f6bb3f9fc160, type: 2}
-  speed: 35
+  speed: 10
   minSpacing: 4
   maxSpacing: 14
   stateContainer: {fileID: 855034128}

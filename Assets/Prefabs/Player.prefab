@@ -335,6 +335,9 @@ MonoBehaviour:
   accelTime: 0.1
   stateContainer: {fileID: 0}
   playerSpawns: {fileID: 0}
+  scoreCanvas: {fileID: 0}
+  gameState: {fileID: 0}
+  winThreshold: 20
 --- !u!114 &114254880466990394
 MonoBehaviour:
   m_ObjectHideFlags: 1
