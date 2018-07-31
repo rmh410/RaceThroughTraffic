@@ -2034,7 +2034,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   curState: 
-  maxNumPlayers: 1
+  maxNumPlayers: 2
   nextSpawn: 0
   winner: 0
 --- !u!4 &855034131
