@@ -1,8 +1,10 @@
 ﻿using System.Collections;
+using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CarController : MonoBehaviour {
+public class CarController : MonoBehaviour
+{
 
 	public float speed = 5.0f;
 	public Material[] paint;
@@ -23,5 +25,20 @@ public class CarController : MonoBehaviour {
 		if (transform.position.x < -55.0f || transform.position.x > 55.0f) {
 			Destroy(gameObject);
 		}
+	}
+
+	private void OnCollisionEnter(Collision collision)
+	{
+		string collisionName = collision.transform.name;
+		Debug.Log(collisionName);
+		if (Regex.IsMatch(collisionName, "Player*")) {
+			Debug.Log("Hit Player");
+			GetComponent<Rigidbody>().isKinematic = true;
+		}
+	}
+
+	private void OnCollisionExit(Collision collision)
+	{
+		GetComponent<Rigidbody>().isKinematic = false;
 	}
 }
