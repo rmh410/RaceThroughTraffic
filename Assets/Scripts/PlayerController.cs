@@ -120,12 +120,19 @@ public class PlayerController : NetworkBehaviour
 	public void ResetGame()
     {
         TearDownScoreCanvas();
-        Debug.Log("Network Discovery is " + networkDiscovery);
         networkDiscovery.ResetClient(); // Does run
         Camera.main.transform.parent.position = new Vector3(0, 20, -70);
+        // resest matchmaking canvas
+        matchmakingCanvas.SetActive(true);
+        matchmakingCanvas.transform.GetChild(0).gameObject.SetActive(true);
+        matchmakingCanvas.transform.GetChild(1).gameObject.SetActive(true);
+
         if (isServer) {
             Debug.Log("Hello from StopHost");
             NetworkManager.singleton.StopHost(); // Does run
+            gameState.curState = "waiting";
+            gameState.nextSpawn = 0;
+            gameState.winner = 0;
         } else {
             Debug.Log("Hello from StopClient");
             NetworkManager.singleton.StopClient(); // Not sure but probably runs
