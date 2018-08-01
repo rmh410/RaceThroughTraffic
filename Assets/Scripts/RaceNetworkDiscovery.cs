@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class RaceNetworkDiscovery : NetworkDiscovery {
-
+public class RaceNetworkDiscovery : NetworkDiscovery
+{
 	private bool inGame = false;
 	private GameParameters paramComponent;
 	private Transform canvas;
@@ -17,9 +17,8 @@ public class RaceNetworkDiscovery : NetworkDiscovery {
 	}
 	
 	public override void OnReceivedBroadcast(string fromAddress, string data) {
-		// if we are not in a game should be trying to join
-		if(!inGame) {
-			
+		// If we are not in a game should be trying to join
+		if (!inGame) {
 			base.OnReceivedBroadcast(fromAddress, data);
 			string[] addressSplit = fromAddress.Split(':');
 			string[] dataSplit = data.Split(':');
@@ -70,6 +69,7 @@ public class RaceNetworkDiscovery : NetworkDiscovery {
 	}
 
 	public void ResetClient() {
+        Debug.Log("Hello from ResetClient");
 		// make avilable to receive brodacasts again
 		inGame = false;
 		// draw the canvas back up

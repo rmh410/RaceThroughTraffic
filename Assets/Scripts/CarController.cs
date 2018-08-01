@@ -5,26 +5,20 @@ using UnityEngine;
 
 public class CarController : MonoBehaviour
 {
-
+    public Material[] paint;
 	public float speed = 5.0f;
-	public Material[] paint;
-
+    private float leftBoundary = -55.0f;
+    private float rightBoundary = 55.0f;
+	
 	void Start()
 	{
-		// Assign random color to vehicle
-		float rand = Random.Range(0.0f, paint.Length);
-		Debug.Log("generating car, material index " + rand.ToString() + " (seed is " + Random.seed + ")");
-		Material randomColor = paint[(int)rand];
-		transform.GetChild(2).GetChild(0).GetComponent<Renderer>().material = randomColor;
-		transform.GetChild(2).GetChild(1).GetComponent<Renderer>().material = randomColor;
+        AssignCarColor();
 	}
 
 	void Update()
 	{
-		// move car forward
 		transform.position += transform.forward * Time.deltaTime * speed;
-		// destroy car if its off the map
-		if (transform.position.x < -55.0f || transform.position.x > 55.0f) {
+		if (transform.position.x < leftBoundary || transform.position.x > rightBoundary) {
 			Destroy(gameObject);
 		}
 	}
@@ -33,7 +27,6 @@ public class CarController : MonoBehaviour
 	{
 		string collisionName = collision.transform.name;
 		if (Regex.IsMatch(collisionName, "Player*")) {
-			Debug.Log("Hit Player");
 			GetComponent<Rigidbody>().isKinematic = true;
 		}
 	}
@@ -42,4 +35,11 @@ public class CarController : MonoBehaviour
 	{
 		GetComponent<Rigidbody>().isKinematic = false;
 	}
+
+    private void AssignCarColor() {
+        float randomPaintIndex = Random.Range(0.0f, paint.Length);
+        Material randomColor = paint[(int)randomPaintIndex];
+        transform.GetChild(2).GetChild(0).GetComponent<Renderer>().material = randomColor; // Top
+        transform.GetChild(2).GetChild(1).GetComponent<Renderer>().material = randomColor; // Bottom
+    }
 }

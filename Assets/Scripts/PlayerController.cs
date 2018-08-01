@@ -1,164 +1,211 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Networking;
 
-public class PlayerController : NetworkBehaviour {
-
-	public GameObject viewer;
+public class PlayerController : NetworkBehaviour
+{
 	public float maxSpeed;
 	public float accelTime;
+    public float winThreshold;
+    public GameObject viewer;
 	public GameObject stateContainer;
 	public GameObject playerSpawns;
 	public GameObject scoreCanvas;
+	public GameObject matchmakingCanvas;
 	public GameState gameState;
-	public float winThreshold;
-
+	
 	private float speed;
 	private string state;
 	private float buttonTime;
 	private float lastSpeed;
-	
+    private bool isResetButtonSetup = false;
+    private RaceNetworkDiscovery networkDiscovery;
 
-	// Use this for initialization
-	public override void OnStartLocalPlayer () {
-		// player setup
-		state = "still";
-		buttonTime = -5.0f;
-		speed = 0.0f;
-		lastSpeed = 0.0f;
-
-		// set up camera and move to us
-		viewer = Camera.main.transform.parent.gameObject;
-		Vector3 viewerDest = this.transform.position;
-		viewerDest.y = viewerDest.y+0.4f;
-		viewer.transform.position = viewerDest;
-
-		// set player spawns
-		playerSpawns = GameObject.Find("Player Spawns");
-		scoreCanvas = GameObject.Find("Score Canvas");
+	public override void OnStartLocalPlayer()
+	{
+        SetupPlayer();
+        SetupCamera();
+        SetupPlayerSpawns();
 	}
-	
-	// Update is called once per frame
-	void Update () {
 
-		// get the game state
-		if(stateContainer == null) {
+	void Update()
+	{
+		// Get GameState
+		if (stateContainer == null) {
 			stateContainer = GameObject.Find("GameState Container");
-		}
-		else if (gameState == null) {
+		} else if (gameState == null) {
 			gameState = stateContainer.GetComponent<GameState>();
 		}
 
-		if(isLocalPlayer) {
+		if (isLocalPlayer) {
 			MovePlayer();
 			ScoreUpdate();
 		}
 
 		if (gameState != null && gameState.curState == "active") {
-			if(isServer) {
-			CheckForWin();
+			if (isServer) {
+				CheckForWin();
 			}
 		}
-		
 	}
 
-	// server should be checking position and updating accordingly if there is one
-	void CheckForWin() {
-		// is the player past the win point?
-		if(transform.position.z > winThreshold) {
+    // -------------------- Initialize --------------------
+    private void SetupPlayer()
+    {
+        speed = 0.0f;
+        state = "still";
+        lastSpeed = 0.0f;
+        buttonTime = -5.0f;
+    }
+
+    private void SetupCamera()
+    {
+        Vector3 viewerDest = this.transform.position;
+        viewer = Camera.main.transform.parent.gameObject;
+        viewer.transform.position = viewerDest;
+        viewerDest.y = viewerDest.y + 0.4f;
+    }
+
+    private void SetupPlayerSpawns()
+    {
+        scoreCanvas = GameObject.Find("Score Canvas");
+        playerSpawns = GameObject.Find("Player Spawns");
+        matchmakingCanvas = GameObject.Find("Matchmaking Canvas");
+        networkDiscovery = GameObject.Find("Network Discovery").GetComponent<RaceNetworkDiscovery>();
+        Debug.Log("Network Discovery is " + networkDiscovery);
+    }
+
+    // -------------------- Gameplay --------------------
+    // Server checks position and determines if there is winner
+	void CheckForWin()
+	{
+		if (transform.position.z > winThreshold) {
 			gameState.curState = "ended";
 			gameState.winner = connectionToClient.connectionId;
-			Debug.Log(gameState.winner);
+			// Debug.Log("Winner's connection ID is: " + gameState.winner);
 		}
 	}
 
-	void ScoreUpdate() {
-		if(gameState == null) {
+	void ScoreUpdate()
+	{
+		if (gameState == null) {
 			return;
 		}
-		if(gameState.curState == "ended") {
-			if(gameState.winner == connectionToServer.connectionId) {
-				scoreCanvas.transform.GetChild(0).gameObject.SetActive(true);
-			}
-			else {
-				scoreCanvas.transform.GetChild(1).gameObject.SetActive(true);
+		if (gameState.curState == "ended") {
+			if (gameState.winner == connectionToServer.connectionId) {
+				scoreCanvas.transform.GetChild(0).gameObject.SetActive(true); // Winner
+				scoreCanvas.transform.GetChild(2).gameObject.SetActive(true); // Reset game option is presented to winner
+                if (!isResetButtonSetup) {
+                    SetupResetButton();
+                }
+			} else {
+				scoreCanvas.transform.GetChild(1).gameObject.SetActive(true); // Loser
 			}
 		}
 	}
 
-	void MovePlayer() {
+    private void SetupResetButton()
+    {
+        UnityEngine.UI.Button resetButton = GameObject.Find("Reset Button").GetComponent<Button>();
+        if (resetButton != null) {
+            resetButton.onClick.AddListener(ResetGame);
+            isResetButtonSetup = true;
+        } else {
+            Debug.Log("Error: reset button not found");
+        }
+    }
+
+	public void ResetGame()
+    {
+        TearDownScoreCanvas();
+        Debug.Log("Network Discovery is " + networkDiscovery);
+        networkDiscovery.ResetClient(); // Does run
+        Camera.main.transform.parent.position = new Vector3(0, 20, -70);
+        if (isServer) {
+            Debug.Log("Hello from StopHost");
+            NetworkManager.singleton.StopHost(); // Does run
+        } else {
+            Debug.Log("Hello from StopClient");
+            NetworkManager.singleton.StopClient(); // Not sure but probably runs
+        }   
+	}
+
+    private void TearDownScoreCanvas()
+    {
+        GameObject scoreCanvas = GameObject.Find("Score Canvas");
+        for (int i = 0; i < scoreCanvas.transform.childCount; i++) {
+            scoreCanvas.transform.GetChild(i).gameObject.SetActive(false);
+        }
+    }
+
+    // Do we need Cmd prefix here?
+	void MovePlayer()
+	{
 		Camera cam = Camera.main;
+		transform.eulerAngles = new Vector3(0, Camera.main.transform.eulerAngles.y, 0); // Set rotation
 
-		// set rotation
-		transform.eulerAngles = new Vector3(0, Camera.main.transform.eulerAngles.y, 0);
-
-		// when we click
-		if(Input.GetButtonDown("Fire1")) {
+		// On click
+		if (Input.GetButtonDown("Fire1")) {
 			buttonTime = Time.fixedTime;
 			state = "accelerating";
 		}
 
-		// if accelerating
-		if(state == "accelerating") {
-			// move forward at speed depending on time of button press
-			speed = maxSpeed * (Time.fixedTime - buttonTime)/accelTime;
-			// slice out y component
+		// If accelerating
+		if (state == "accelerating") {
+            // Move forward at speed depending on time of button press
+			speed = maxSpeed * (Time.fixedTime - buttonTime) / accelTime;
 			Vector3 dest = this.transform.position + speed * cam.transform.forward * Time.deltaTime;
-			dest.y = this.transform.position.y;
-			// update position
-			this.transform.position = dest;
-			// if its been three seconds go to gliding state
-			if(Time.fixedTime - buttonTime >= accelTime) {
+			dest.y = this.transform.position.y; // Slice out y component
+			this.transform.position = dest; // Update position
+
+			// If its been three seconds go to gliding state
+			if (Time.fixedTime - buttonTime >= accelTime) {
 				state = "gliding";
 			}
-			
-		}
-
-		else if (state == "gliding") {
-			// move forward
-			// slice out y component
+		} else if (state == "gliding") {
+			// Move forward, slice out y component
 			Vector3 dest = this.transform.position + maxSpeed * cam.transform.forward * Time.deltaTime;
 			dest.y = this.transform.position.y;
 			this.transform.position = dest;
 		}
 
-		// when we release button
-		if((state == "accelerating" || state == "gliding") && Input.GetButtonUp("Fire1")) {
-
-			state =	 "decelerating";
+		// On button release
+		if ((state == "accelerating" || state == "gliding") && Input.GetButtonUp("Fire1")) {
+			state = "decelerating";
 			buttonTime = Time.fixedTime;
 			lastSpeed = speed;
 		}
 
-		if(state == "decelerating") {
-			// move forward at speed depending on time of button release
-			speed = (accelTime - (Time.fixedTime - buttonTime))/accelTime * lastSpeed;
-			// slice out y component
+		if (state == "decelerating") {
+			// Move forward at speed depending on time of button release
+			speed = (accelTime - (Time.fixedTime - buttonTime)) / accelTime * lastSpeed;
+			// Slice out y component
 			Vector3 dest = this.transform.position + speed * cam.transform.forward * Time.deltaTime;
 			dest.y = this.transform.position.y;
 			this.transform.position = dest;
-			// if its been three seconds stop
-			if(Time.fixedTime - buttonTime >= accelTime) {
+			// If its been three seconds stop
+			if (Time.fixedTime - buttonTime >= accelTime) {
 				state = "still";
 				speed = 0.0f;
 			}
 		}
-		// now move the camera
+		// Now move the camera
 		Vector3 viewerDest = this.transform.position;
 		viewerDest.y = viewerDest.y + 0.4f;
 		viewer.transform.position = viewerDest;
 	}
 
-	void OnCollisionEnter(Collision collision) {
-		// client should move to the next spawn point
-		if(isLocalPlayer) {
+	void OnCollisionEnter(Collision collision)
+	{
+		// Client should move to the next spawn point
+		if (isLocalPlayer) {
 			transform.position = playerSpawns.transform.GetChild(gameState.nextSpawn).position;
-
 		}
 
-		// server should update the next spawn point for round robin
-		if(isServer) {
+		// Server should update the next spawn point for round robin
+		if (isServer) {
 			gameState.UpdateSpawn();
 			return;
 		}

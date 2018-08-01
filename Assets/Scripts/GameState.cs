@@ -15,41 +15,27 @@ public class GameState : NetworkBehaviour {
 	public int winner;
 
 	public int maxNumPlayers;
-
-// custom network manager
-	private CustomNetworkManager netMan;
-
-	// default network manager
-//	private NetworkManager netMan;
+	private CustomNetworkManager networkManager;
 	
-	// Use this for initialization
-	void Start () {
-
-		if(isServer) {
+	void Start ()
+    {
+		if (isServer) {
 			curState = "waiting";			
 		}
-
-		// custom network manager
-		netMan = GameObject.Find("Custom Network Manager").GetComponent<CustomNetworkManager>();
-
-		// default network manager
-//		netMan = GameObject.Find("Network Manager").GetComponent<NetworkManager>();
+		networkManager = GameObject.Find("Custom Network Manager").GetComponent<CustomNetworkManager>();
 	}
 	
-	// Update is called once per frame
-	void Update () {
-		// if we're waiting and now have right number of players
-		if(isServer && (netMan.numPlayers == maxNumPlayers) && (curState == "waiting")) {
-			StartMatch();
+	void Update ()
+    {
+		// If correct number of players is met while waiting
+		if(isServer && (networkManager.numPlayers == maxNumPlayers) && (curState == "waiting")) {
+			curState = "active"; // Start match
 		}
 	}
 
-	private void StartMatch() {
-		curState = "active";
-	}
-
-	public void UpdateSpawn() {
-		nextSpawn = (nextSpawn + 1)%maxNumPlayers;
+	public void UpdateSpawn()
+    {
+		nextSpawn = (nextSpawn + 1) % maxNumPlayers;
 	}
 
 	
