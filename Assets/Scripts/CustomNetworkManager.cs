@@ -32,6 +32,7 @@ public class CustomNetworkManager : NetworkManager {
 		/***********************************************/
 
 		// MY CODE
+		Debug.Log("Client " + conn.connectionId + " disconnected");
 
     }
 

@@ -18,7 +18,6 @@ public class PlayerController : NetworkBehaviour {
 	private string state;
 	private float buttonTime;
 	private float lastSpeed;
-	
 
 	// Use this for initialization
 	public override void OnStartLocalPlayer () {
@@ -37,6 +36,7 @@ public class PlayerController : NetworkBehaviour {
 		// set player spawns
 		playerSpawns = GameObject.Find("Player Spawns");
 		scoreCanvas = GameObject.Find("Score Canvas");
+		
 	}
 	
 	// Update is called once per frame
