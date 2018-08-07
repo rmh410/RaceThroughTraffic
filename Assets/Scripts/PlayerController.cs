@@ -20,7 +20,8 @@ public class PlayerController : NetworkBehaviour
 	private string state;
 	private float buttonTime;
 	private float lastSpeed;
-    private bool isResetButtonSetup = false;
+    private bool isPlayAgainButtonSetup = false;
+    private Vector3 initialPlayerPos;
     private RaceNetworkDiscovery networkDiscovery;
 
 	public override void OnStartLocalPlayer()
@@ -41,14 +42,31 @@ public class PlayerController : NetworkBehaviour
 
 		if (isLocalPlayer) {
 			MovePlayer();
-			ScoreUpdate();
+            DisplayEndGameMessage();
+            if (gameState) {
+                Debug.Log(gameState.playAgainCount);
+                Debug.Log(gameState.curState);
+                Debug.Log(gameState.isWinnerDetermined);
+            }
 		}
 
 		if (gameState != null && gameState.curState == "active") {
 			if (isServer) {
-				CheckForWin();
+                    CheckForWin();
+                }
 			}
 		}
+
+        if (gameState != null && gameState.curState == "ended") {
+            if (gameState.playAgainCount == gameState.maxNumPlayers) { // Everyone opt in yet?
+                if (isServer) {
+                    gameState.ServerReset();
+                }
+                if (isLocalPlayer) {
+                    ResetGame();
+                }
+            }
+        }
 	}
 
     // -------------------- Initialize --------------------
@@ -58,6 +76,7 @@ public class PlayerController : NetworkBehaviour
         state = "still";
         lastSpeed = 0.0f;
         buttonTime = -5.0f;
+        initialPlayerPos = transform.position;
     }
 
     private void SetupCamera()
@@ -74,7 +93,6 @@ public class PlayerController : NetworkBehaviour
         playerSpawns = GameObject.Find("Player Spawns");
         matchmakingCanvas = GameObject.Find("Matchmaking Canvas");
         networkDiscovery = GameObject.Find("Network Discovery").GetComponent<RaceNetworkDiscovery>();
-        Debug.Log("Network Discovery is " + networkDiscovery);
     }
 
     // -------------------- Gameplay --------------------
@@ -84,59 +102,55 @@ public class PlayerController : NetworkBehaviour
 		if (transform.position.z > winThreshold) {
 			gameState.curState = "ended";
 			gameState.winner = connectionToClient.connectionId;
-			// Debug.Log("Winner's connection ID is: " + gameState.winner);
 		}
 	}
 
-	void ScoreUpdate()
+	private void DisplayEndGameMessage()
 	{
 		if (gameState == null) {
 			return;
 		}
 		if (gameState.curState == "ended") {
 			if (gameState.winner == connectionToServer.connectionId) {
-				scoreCanvas.transform.GetChild(0).gameObject.SetActive(true); // Winner
-				scoreCanvas.transform.GetChild(2).gameObject.SetActive(true); // Reset game option is presented to winner
-                if (!isResetButtonSetup) {
-                    SetupResetButton();
-                }
+				scoreCanvas.transform.GetChild(0).gameObject.SetActive(true); // Winner message
 			} else {
-				scoreCanvas.transform.GetChild(1).gameObject.SetActive(true); // Loser
+				scoreCanvas.transform.GetChild(1).gameObject.SetActive(true); // Loser message
 			}
+            scoreCanvas.transform.GetChild(2).gameObject.SetActive(true); // Play Again button presented to both players
+            if (!isPlayAgainButtonSetup) {
+                SetupPlayAgainButton();
+            }
 		}
 	}
 
-    private void SetupResetButton()
+    private void SetupPlayAgainButton()
     {
-        UnityEngine.UI.Button resetButton = GameObject.Find("Reset Button").GetComponent<Button>();
-        if (resetButton != null) {
-            resetButton.onClick.AddListener(ResetGame);
-            isResetButtonSetup = true;
+        UnityEngine.UI.Button playAgainButton = GameObject.Find("Play Again").GetComponent<Button>();
+        if (playAgainButton != null) {
+            playAgainButton.onClick.AddListener(CmdCommitToPlayAgain);
+            isPlayAgainButtonSetup = true;
         } else {
-            Debug.Log("Error: reset button not found");
+            Debug.Log("Error: \'Play Again\' button not found");
         }
+    }
+
+    [Command]
+    private void CmdCommitToPlayAgain()
+    {
+        gameState.playAgainCount += 1;
+        scoreCanvas.transform.GetChild(2).gameObject.SetActive(false); // Disable Play Again button
+        if (gameState.playAgainCount == gameState.)
     }
 
 	public void ResetGame()
     {
         TearDownScoreCanvas();
-        networkDiscovery.ResetClient(); // Does run
-        Camera.main.transform.parent.position = new Vector3(0, 20, -70);
-        // resest matchmaking canvas
-        matchmakingCanvas.SetActive(true);
-        matchmakingCanvas.transform.GetChild(0).gameObject.SetActive(true);
-        matchmakingCanvas.transform.GetChild(1).gameObject.SetActive(true);
+        // Camera.main.transform.parent.position = new Vector3(0, 20, -70);
+        transform.position = initialPlayerPos;
+        isPlayAgainButtonSetup = false;
+        hasOptedIn = false;
+        isDoneOptingIn = false;
 
-        if (isServer) {
-            Debug.Log("Hello from StopHost");
-            NetworkManager.singleton.StopHost(); // Does run
-            gameState.curState = "waiting";
-            gameState.nextSpawn = 0;
-            gameState.winner = 0;
-        } else {
-            Debug.Log("Hello from StopClient");
-            NetworkManager.singleton.StopClient(); // Not sure but probably runs
-        }   
 	}
 
     private void TearDownScoreCanvas()
@@ -147,7 +161,6 @@ public class PlayerController : NetworkBehaviour
         }
     }
 
-    // Do we need Cmd prefix here?
 	void MovePlayer()
 	{
 		Camera cam = Camera.main;

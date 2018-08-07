@@ -19,7 +19,7 @@ public class CarController : MonoBehaviour
 	{
 		transform.position += transform.forward * Time.deltaTime * speed;
 		if (transform.position.x < leftBoundary || transform.position.x > rightBoundary) {
-			Destroy(gameObject);
+			Destroy(gameObject); // Destroy off-view car
 		}
 	}
 

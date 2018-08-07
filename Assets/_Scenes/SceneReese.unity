@@ -999,7 +999,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: LOSER!!!
+  m_Text: You lose!
 --- !u!222 &437683826
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1588,7 +1588,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Reset
+  m_Text: Play again?
 --- !u!222 &671787764
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1819,7 +1819,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: YOU WIN!
+  m_Text: You win!
 --- !u!222 &773190232
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2110,6 +2110,8 @@ MonoBehaviour:
   curState: 
   nextSpawn: 0
   winner: 0
+  playAgainCount: 0
+  isWinnerDetermined: 0
   maxNumPlayers: 1
 --- !u!4 &855034131
 Transform:
@@ -3399,7 +3401,7 @@ GameObject:
   - component: {fileID: 1399136092}
   - component: {fileID: 1399136091}
   m_Layer: 5
-  m_Name: Reset Button
+  m_Name: Play Again
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

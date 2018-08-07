@@ -14,6 +14,12 @@ public class GameState : NetworkBehaviour {
 	[SyncVar]
 	public int winner;
 
+    [SyncVar]
+    public int playAgainCount = 0;
+
+    [SyncVar]
+    public bool isWinnerDetermined = false;
+
 	public int maxNumPlayers;
 	private CustomNetworkManager networkManager;
 	
@@ -38,5 +44,12 @@ public class GameState : NetworkBehaviour {
 		nextSpawn = (nextSpawn + 1) % maxNumPlayers;
 	}
 
-	
+    public void ServerReset()
+    {
+        winner = 0;
+        nextSpawn = 0;
+        curState = "active";
+        playAgainCount = 0;
+        isWinnerDetermined = false;
+    }
 }
