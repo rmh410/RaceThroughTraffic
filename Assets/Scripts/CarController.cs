@@ -23,6 +23,7 @@ public class CarController : MonoBehaviour
 		}
 	}
 
+    // Consider disabling on every collision, because the car is also colliding with the ground
 	private void OnCollisionEnter(Collision collision)
 	{
 		string collisionName = collision.transform.name;

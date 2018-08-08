@@ -16,11 +16,13 @@ public class PlayerController : NetworkBehaviour
 	public GameObject matchmakingCanvas;
 	public GameState gameState;
 	
+    private bool serverClickFlag = false;
+    private bool localPlayerClickFlag = false;
+    private string waitForOpponent = "waiting for opponent";
 	private float speed;
 	private string state;
 	private float buttonTime;
 	private float lastSpeed;
-    private bool isPlayAgainButtonSetup = false;
     private Vector3 initialPlayerPos;
     private RaceNetworkDiscovery networkDiscovery;
 
@@ -43,28 +45,21 @@ public class PlayerController : NetworkBehaviour
 		if (isLocalPlayer) {
 			MovePlayer();
             DisplayEndGameMessage();
-            if (gameState) {
-                Debug.Log(gameState.playAgainCount);
+            if (gameState != null)
                 Debug.Log(gameState.curState);
-                Debug.Log(gameState.isWinnerDetermined);
+		}
+
+        if (isServer) {
+            if (gameState != null && gameState.curState == "active") {
+                CheckForWin();
             }
-		}
 
-		if (gameState != null && gameState.curState == "active") {
-			if (isServer) {
-                    CheckForWin();
-                }
-			}
-		}
+            // if (gameState != null && gameState.curState == "waiting for opponent") {
+            //     CheckForNextRound();
+            // }
 
-        if (gameState != null && gameState.curState == "ended") {
-            if (gameState.playAgainCount == gameState.maxNumPlayers) { // Everyone opt in yet?
-                if (isServer) {
-                    gameState.ServerReset();
-                }
-                if (isLocalPlayer) {
-                    ResetGame();
-                }
+            if (gameState != null) {
+                Debug.Log(gameState.curState);
             }
         }
 	}
@@ -105,6 +100,18 @@ public class PlayerController : NetworkBehaviour
 		}
 	}
 
+    void CheckForNextRound()
+    {
+        if (gameState.curState == "waiting for opponent" && gameState.playAgainCount == gameState.maxNumPlayers) {
+            Debug.Log("gameState.playAgainCount is " + gameState.playAgainCount);
+            Debug.Log("gameState.maxNumPlayers is " + gameState.maxNumPlayers);
+            Debug.Log("gameState.playAgainCount equals gameState.maxNumPlayers " + (gameState.playAgainCount == gameState.maxNumPlayers));
+            Debug.Log("Good to reset game!");
+        } else {
+            Debug.Log("Reset not ready!");
+        }
+    }
+
 	private void DisplayEndGameMessage()
 	{
 		if (gameState == null) {
@@ -114,43 +121,66 @@ public class PlayerController : NetworkBehaviour
 			if (gameState.winner == connectionToServer.connectionId) {
 				scoreCanvas.transform.GetChild(0).gameObject.SetActive(true); // Winner message
 			} else {
-				scoreCanvas.transform.GetChild(1).gameObject.SetActive(true); // Loser message
-			}
-            scoreCanvas.transform.GetChild(2).gameObject.SetActive(true); // Play Again button presented to both players
-            if (!isPlayAgainButtonSetup) {
-                SetupPlayAgainButton();
+                scoreCanvas.transform.GetChild(1).gameObject.SetActive(true); // Loser message
             }
+            scoreCanvas.transform.GetChild(2).gameObject.SetActive(true); // Play Again button presented to both players
+            SetupPlayAgainButton();
 		}
 	}
 
     private void SetupPlayAgainButton()
     {
-        UnityEngine.UI.Button playAgainButton = GameObject.Find("Play Again").GetComponent<Button>();
+        UnityEngine.UI.Button playAgainButton = GameObject.Find("Play Again Button").GetComponent<Button>();
         if (playAgainButton != null) {
-            playAgainButton.onClick.AddListener(CmdCommitToPlayAgain);
-            isPlayAgainButtonSetup = true;
+            // server/client player will change state
+            if (isServer) {
+                playAgainButton.onClick.AddListener(ServerToggleGameState);
+            }
+            // Both server/client and client-only players reset position
+            if (isLocalPlayer) {
+                playAgainButton.onClick.AddListener(ResetGame);
+            }
+            // client-only player will opt in using [Command]
+            if (!isServer && isLocalPlayer) {
+                playAgainButton.onClick.AddListener(LocalPlayerOptIn);
+            }
         } else {
             Debug.Log("Error: \'Play Again\' button not found");
         }
     }
 
-    [Command]
-    private void CmdCommitToPlayAgain()
+    private void ServerToggleGameState()
     {
-        gameState.playAgainCount += 1;
-        scoreCanvas.transform.GetChild(2).gameObject.SetActive(false); // Disable Play Again button
-        if (gameState.playAgainCount == gameState.)
+        if (!serverClickFlag) {
+            gameState.playAgainCount = 60;
+            Debug.Log("Hello from ServerToggleGameState");
+            Debug.Log("gameState.playAgainCount is " + gameState.playAgainCount);
+        }
+        serverClickFlag = true;
+    }
+
+    private void LocalPlayerOptIn()
+    {
+        CmdLocalPlayerOptIn();
+    }
+
+    [Command]
+    private void CmdLocalPlayerOptIn()
+    {
+        if (!localPlayerClickFlag) {
+            Debug.Log("Hello from !isServer isLocalPlayer conditional");
+            gameState.playAgainCount = 30;
+            Debug.Log("Hello from CmdLocalPlayerOptIn");
+            Debug.Log("gameState.playAgainCount is " + gameState.playAgainCount);
+        }
+        localPlayerClickFlag = true;
     }
 
 	public void ResetGame()
     {
+        gameState.curState = waitForOpponent;
         TearDownScoreCanvas();
-        // Camera.main.transform.parent.position = new Vector3(0, 20, -70);
         transform.position = initialPlayerPos;
-        isPlayAgainButtonSetup = false;
-        hasOptedIn = false;
-        isDoneOptingIn = false;
-
 	}
 
     private void TearDownScoreCanvas()

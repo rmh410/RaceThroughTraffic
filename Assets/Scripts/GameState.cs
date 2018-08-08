@@ -17,9 +17,6 @@ public class GameState : NetworkBehaviour {
     [SyncVar]
     public int playAgainCount = 0;
 
-    [SyncVar]
-    public bool isWinnerDetermined = false;
-
 	public int maxNumPlayers;
 	private CustomNetworkManager networkManager;
 	
@@ -34,7 +31,7 @@ public class GameState : NetworkBehaviour {
 	void Update ()
     {
 		// If correct number of players is met while waiting
-		if(isServer && (networkManager.numPlayers == maxNumPlayers) && (curState == "waiting")) {
+		if (isServer && (networkManager.numPlayers == maxNumPlayers) && (curState == "waiting")) {
 			curState = "active"; // Start match
 		}
 	}
@@ -50,6 +47,6 @@ public class GameState : NetworkBehaviour {
         nextSpawn = 0;
         curState = "active";
         playAgainCount = 0;
-        isWinnerDetermined = false;
+        // isWinnerDetermined = false;
     }
 }
