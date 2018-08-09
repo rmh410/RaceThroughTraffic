@@ -289,15 +289,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2e5f1052d1334fc0ae7bc80c3ca5e2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSpeed: 20
-  accelTime: 0.1
-  winThreshold: 20
   viewer: {fileID: 0}
+  maxSpeed: 27
+  accelTime: 0.08
   stateContainer: {fileID: 0}
   playerSpawns: {fileID: 0}
   scoreCanvas: {fileID: 0}
-  matchmakingCanvas: {fileID: 0}
   gameState: {fileID: 0}
+  winThreshold: 20
 --- !u!114 &114254880466990394
 MonoBehaviour:
   m_ObjectHideFlags: 1

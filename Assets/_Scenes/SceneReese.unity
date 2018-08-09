@@ -1310,9 +1310,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   carPrefab: {fileID: 1960404658167606, guid: d83d2c6760ad245c4975f6bb3f9fc160, type: 2}
-  speed: 20
+  speed: 25
   minSpacing: 6
-  maxSpacing: 18
+  maxSpacing: 12
   stateContainer: {fileID: 855034128}
 --- !u!1 &604162698
 GameObject:
@@ -2626,7 +2626,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   carPrefab: {fileID: 1960404658167606, guid: d83d2c6760ad245c4975f6bb3f9fc160, type: 2}
-  speed: 30
+  speed: 45
   minSpacing: 4
   maxSpacing: 10
   stateContainer: {fileID: 855034128}
@@ -2836,9 +2836,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   carPrefab: {fileID: 1960404658167606, guid: d83d2c6760ad245c4975f6bb3f9fc160, type: 2}
-  speed: 40
+  speed: 50
   minSpacing: 5
-  maxSpacing: 20
+  maxSpacing: 16
   stateContainer: {fileID: 855034128}
 --- !u!1001 &1258140730
 Prefab:
@@ -4075,9 +4075,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   carPrefab: {fileID: 1960404658167606, guid: d83d2c6760ad245c4975f6bb3f9fc160, type: 2}
-  speed: 13
-  minSpacing: 2
-  maxSpacing: 6
+  speed: 20
+  minSpacing: 3
+  maxSpacing: 7
   stateContainer: {fileID: 855034128}
 --- !u!1 &1839866592
 GameObject:
