@@ -18,6 +18,8 @@ public class GameState : NetworkBehaviour {
     public int playAgainCount = 0;
 
 	public int maxNumPlayers;
+
+    private string activeState = "active";
 	private CustomNetworkManager networkManager;
 	
 	void Start ()
@@ -43,10 +45,9 @@ public class GameState : NetworkBehaviour {
 
     public void ServerReset()
     {
-        winner = 0;
+        curState = activeState;
         nextSpawn = 0;
-        curState = "active";
+        winner = -1;
         playAgainCount = 0;
-        // isWinnerDetermined = false;
     }
 }
