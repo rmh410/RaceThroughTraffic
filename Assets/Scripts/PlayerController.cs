@@ -155,10 +155,10 @@ public class PlayerController : NetworkBehaviour {
 				transform.position = new Vector3(transform.position.x, transform.position.y, -30.0f);
 			}
 		}
-		if(transform.position.x < 50.0f) {
+		if(transform.position.x > 50.0f) {
 			transform.position = new Vector3(50.0f, transform.position.y, transform.position.z);
 		}
-		else if (transform.position.x < 50.0f) {
+		else if (transform.position.x < -50.0f) {
 			transform.position = new Vector3(-50.0f, transform.position.y, transform.position.z);
 		}
 	}

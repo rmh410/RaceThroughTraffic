@@ -2036,7 +2036,7 @@ MonoBehaviour:
   curState: 
   nextSpawn: 0
   winner: 0
-  maxNumPlayers: 1
+  maxNumPlayers: 3
 --- !u!4 &855034131
 Transform:
   m_ObjectHideFlags: 0
