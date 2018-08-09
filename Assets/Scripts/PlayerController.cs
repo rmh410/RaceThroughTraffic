@@ -148,6 +148,13 @@ public class PlayerController : NetworkBehaviour {
 		Vector3 viewerDest = this.transform.position;
 		viewerDest.y = viewerDest.y + 0.4f;
 		viewer.transform.position = viewerDest;
+
+		// constrain motion to 
+		if (gameState.curState == "waiting") {
+			if(transform.position.z > -30.0f) {
+				transform.position.z = -30.0f;
+			}
+		}
 	}
 
 	void OnCollisionEnter(Collision collision) {
