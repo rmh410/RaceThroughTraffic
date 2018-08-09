@@ -156,6 +156,7 @@ public class PlayerController : NetworkBehaviour
     {
         gameState.curState = waitForOpponent;
         HideScoreCanvas();
+        Debug.Log("spawning player at next spawn"+gameState.nextSpawn.ToString());
         transform.position = playerSpawns.transform.GetChild(gameState.nextSpawn).position; // Confirm with Reese
 	}
 
@@ -236,4 +237,5 @@ public class PlayerController : NetworkBehaviour
 			return;
 		}
 	}
+
 }

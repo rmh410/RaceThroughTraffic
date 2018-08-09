@@ -40,6 +40,7 @@ public class GameState : NetworkBehaviour {
 
 	public void UpdateSpawn()
     {
+    	Debug.Log("updating spawn");
 		nextSpawn = (nextSpawn + 1) % maxNumPlayers;
 	}
 
