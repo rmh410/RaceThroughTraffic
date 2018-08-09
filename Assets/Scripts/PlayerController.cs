@@ -78,6 +78,7 @@ public class PlayerController : NetworkBehaviour {
 			return;
 		}
 		if(gameState.curState == "ended") {
+			Debug.Log("connection id is "+connectionToServer.connectionId);
 			if(gameState.winner == connectionToServer.connectionId) {
 				scoreCanvas.transform.GetChild(0).gameObject.SetActive(true);
 			}
@@ -155,11 +156,11 @@ public class PlayerController : NetworkBehaviour {
 				transform.position = new Vector3(transform.position.x, transform.position.y, -30.0f);
 			}
 		}
-		if(transform.position.x > 50.0f) {
-			transform.position = new Vector3(50.0f, transform.position.y, transform.position.z);
+		if(transform.position.x > 49.0f) {
+			transform.position = new Vector3(49.0f, transform.position.y, transform.position.z);
 		}
-		else if (transform.position.x < -50.0f) {
-			transform.position = new Vector3(-50.0f, transform.position.y, transform.position.z);
+		else if (transform.position.x < -49.0f) {
+			transform.position = new Vector3(-49.0f, transform.position.y, transform.position.z);
 		}
 	}
 
