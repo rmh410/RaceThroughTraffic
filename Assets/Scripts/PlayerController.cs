@@ -149,11 +149,17 @@ public class PlayerController : NetworkBehaviour {
 		viewerDest.y = viewerDest.y + 0.4f;
 		viewer.transform.position = viewerDest;
 
-		// constrain motion to 
+		// constrain during waiting
 		if (gameState.curState == "waiting") {
 			if(transform.position.z > -30.0f) {
 				transform.position = new Vector3(transform.position.x, transform.position.y, -30.0f);
 			}
+		}
+		if(transform.position.x < 50.0f) {
+			transform.position = new Vector3(50.0f, transform.position.y, transform.position.z);
+		}
+		else if (transform.position.x < 50.0f) {
+			transform.position = new Vector3(-50.0f, transform.position.y, transform.position.z);
 		}
 	}
 
